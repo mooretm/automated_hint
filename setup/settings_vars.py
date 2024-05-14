@@ -11,7 +11,7 @@ fields = {
     'repetitions': {'type': 'int', 'value': 1},
     'lists': {'type': 'str', 'value': '1, 2'},
     'import_audio_path': {'type': 'str', 'value': r'.\stimuli\audio'},
-    'matrix_file_path': {'type': 'str', 'value': r'.\setup\matrix_HINT.csv'},
+    'matrix_file_path': {'type': 'str', 'value': r'.\stimuli\sentences\matrix_HINT.csv'},
     'step_sizes': {'type': 'str', 'value': '4, 4, 4, 4, 2'},
 
     # Presentation level variables

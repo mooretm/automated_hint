@@ -129,27 +129,27 @@ class MainMenu(tk.Menu):
         # Help Menu #
         #############
         logger.debug("Creating 'Help' menu")
-        help_menu = tk.Menu(self, tearoff=False)
-        help_menu.add_command(
+        self.help_menu = tk.Menu(self, tearoff=False)
+        self.help_menu.add_command(
             label='About...',
             command=self.show_about,
             image=self.icons['help_about'],
             compound=tk.LEFT,
         )
-        help_menu.add_command(
+        self.help_menu.add_command(
             label='README...',
             command=self._event('<<HelpREADME>>'),
             image=self.icons['help_help'],
             compound=tk.LEFT,
         )
-        help_menu.add_command(
+        self.help_menu.add_command(
             label="Change Log...",
             command=self._event('<<HelpChangelog>>'),
             image=self.icons['help_changelog'],
             compound=tk.LEFT,
         )
         # Add help menu to the menubar
-        self.add_cascade(label="Help", menu=help_menu)
+        self.add_cascade(label="Help", menu=self.help_menu)
 
         #####################
         # Bind accelerators #

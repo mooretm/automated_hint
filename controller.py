@@ -115,7 +115,6 @@ class Application(tk.Tk):
     """ Application root window. """
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.update_idletasks()
 
         #splash_screen = Splash(parent=self, text="Loading Automated HINT")
 
@@ -126,20 +125,17 @@ class Application(tk.Tk):
         #############
         self.NAME = 'Automated HINT'
         self.VERSION = '0.1.0'
-        self.EDITED = 'May 13, 2024'
+        self.EDITED = 'May 14, 2024'
 
         ################
         # Window setup #
         ################
-        #self.geometry("300x200")
         self.resizable(False, False)
         self.title(self.NAME)
         self.taskbar_icon = tk.PhotoImage(
             file=tkgui.shared_assets.images.LOGO_FULL_PNG
             )
         self.iconphoto(True, self.taskbar_icon)
-
-        
 
         ######################################
         # Initialize Models, Menus and Views #
@@ -161,7 +157,7 @@ class Application(tk.Tk):
 
         # Default public attributes
         self.level_data = []
-        logger.debug("Setting 'start' flag to True")
+        logger.debug("Setting controller 'start' flag to True")
         self.start_flag = True
 
         # Assign special quit function on window close
@@ -174,13 +170,13 @@ class Application(tk.Tk):
         self.main_view = views.MainView(self, self.settings)
         self.main_view.grid(row=5, column=5)
 
-        # Load menus
         # Create menu settings dictionary
         self._app_info = {
             'name': self.NAME,
             'version': self.VERSION,
             'last_edited': self.EDITED
         }
+        # Load menus
         self.menu = menus.MainMenu(self, self._app_info)
         self.config(menu=self.menu)
 
@@ -271,6 +267,9 @@ class Application(tk.Tk):
         # Destroy splash screen
         #splash_screen.destroy()
 
+        # Temporarily disable Help menu until documents are written
+        self.menu.help_menu.entryconfig('README...', state='disabled')
+
         # Center main window
         self.center_window()
         #self.center_window(self)
@@ -292,7 +291,7 @@ class Application(tk.Tk):
         y = screen_height/2 - size[1]/2
         self.geometry("+%d+%d" % (x, y))
         #print(f"\n\nscreen width, height: {screen_width}, {screen_height}")
-        #print(f"geometry: {self.geometry()}")
+        print(f"geometry: {self.geometry()}")
         self.deiconify()
 
 
