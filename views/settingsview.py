@@ -86,7 +86,8 @@ class SettingsView(tk.Toplevel):
         lbl_sub.grid(row=5, column=5, sticky='e', **widget_options)
         sub_tt = Hovertip(
             anchor_widget=lbl_sub,
-            text="A unique subject identifier.\nCan be alpha, numeric, or both.",
+            text="A unique subject identifier."+
+                "\nCan be alpha, numeric, or both.",
             hover_delay=tt_delay
             )
         ttk.Entry(frm_session, 
@@ -98,7 +99,8 @@ class SettingsView(tk.Toplevel):
         lbl_condition.grid(row=10, column=5, sticky='e', **widget_options)
         condition_tt = Hovertip(
             anchor_widget=lbl_condition,
-            text="A unique condition name.\nCan be alpha, numeric, or both.\nSeparate words with underscores.",
+            text="A unique condition name.\nCan be alpha, numeric, or both." +
+                "\nSeparate words with underscores.",
             hover_delay=tt_delay
             )
         ttk.Entry(frm_session, 
@@ -106,28 +108,40 @@ class SettingsView(tk.Toplevel):
             ).grid(row=10, column=10, sticky='w', **widget_options)
         
         # Lists
-        ttk.Label(frm_sentence,
+        lbl_lists = ttk.Label(frm_sentence,
                   text="List(s):",
                   takefocus=0
-                  ).grid(row=5,
+                  )
+        lbl_lists.grid(row=5,
                          column=5,
                          sticky='e',
                          **widget_options
                          )
+        lists_tt = Hovertip(
+            anchor_widget=lbl_lists,
+            text="The list numbers to include in the session." +
+                "\nSeparate multiple values with a comma and space: 1, 2, 3",
+            hover_delay=tt_delay
+            )
         ttk.Entry(frm_sentence,
                   textvariable=self.settings['lists']
                   ).grid(row=5, column=10, **widget_options)
         
         # Sentence level
-        lbl_sentence_level = ttk.Label(frm_sentence, text="Level:")
-        lbl_sentence_level.grid(row=10, column=5, sticky='e', **widget_options)
+        lbl_sentence_level = ttk.Label(frm_sentence, text="Starting Level:")
+        lbl_sentence_level.grid(row=10, 
+                                column=5, 
+                                sticky='e', 
+                                **widget_options
+                                )
         sentence_level_tt = Hovertip(
             anchor_widget=lbl_sentence_level,
-            text="Enter a single presentation level for the sentences.",
+            text="A single starting presentation level for the sentences.",
             hover_delay=tt_delay
             )
         ttk.Entry(frm_sentence, width=7,
-            textvariable=self.settings['desired_level_dB']
+            #textvariable=self.settings['desired_level_dB']
+            textvariable=self.settings['starting_level_dB']
             ).grid(row=10, column=10, sticky='w', **widget_options)
 
         # Noise level
@@ -135,7 +149,7 @@ class SettingsView(tk.Toplevel):
         lbl_noise_level.grid(row=5, column=5, sticky='e', **widget_options)
         noise_level_tt = Hovertip(
             anchor_widget=lbl_noise_level,
-            text="Enter a single presentation level for the noise.",
+            text="A single presentation level for the noise.",
             hover_delay=tt_delay
             )
         ttk.Entry(frm_noise, width=7,

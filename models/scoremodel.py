@@ -24,6 +24,7 @@ class ScoreModel:
     def __init__(self):
         """ Instantiate a ScoreModel object. """
         logger.debug("Initializing ScoreModel")
+        self.outcome = None
 
 
     def _get_word_lists(self, words, button_states):
@@ -89,7 +90,7 @@ class ScoreModel:
         """
         logger.debug("Calculating final SNR")
         # Average of trials five to end
-        avg_level = statistics.mean(trial_levels[4:])
+        avg_level = round(statistics.mean(trial_levels[4:]), 2)
         self.final_snr = avg_level - noise_level
 
 

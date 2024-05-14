@@ -87,15 +87,16 @@ class Splash(tk.Toplevel):
         tk.Toplevel.__init__(self, parent)
         #logger.debug("Initializing splash screen")
         self.withdraw()
-        self.title("Loading")
+        self.title("Please wait")
         self.geometry("300x200")
+        self.resizable(False, False)
         tk.Label(self, text=text).pack()
-        self.center_window()
+        self.center_splashscreen()
         self.update()
+        
 
-    def center_window(self):
-        """ Center the root window. """
-        #logger.debug("Centering splash screen")
+    def center_splashscreen(self):
+        """ Center the splash screen. """
         self.update_idletasks()
         screen_width = self.winfo_screenwidth()
         screen_height = self.winfo_screenheight()
@@ -103,6 +104,8 @@ class Splash(tk.Toplevel):
         x = screen_width/2 - size[0]/2
         y = screen_height/2 - size[1]/2
         self.geometry("+%d+%d" % (x, y))
+        print(f"\n\nscreen width, height: {screen_width}, {screen_height}")
+        print(f"geometry: {self.geometry()}")
         self.deiconify()
 
 ###############
@@ -112,19 +115,23 @@ class Application(tk.Tk):
     """ Application root window. """
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.update_idletasks()
 
-        self.withdraw() # Hide window during setup
+        #splash_screen = Splash(parent=self, text="Loading Automated HINT")
+
+        self.withdraw() # Hide root window during setup
 
         #############
         # Constants #
         #############
         self.NAME = 'Automated HINT'
         self.VERSION = '0.1.0'
-        self.EDITED = 'May 10, 2024'
+        self.EDITED = 'May 13, 2024'
 
         ################
         # Window setup #
         ################
+        #self.geometry("300x200")
         self.resizable(False, False)
         self.title(self.NAME)
         self.taskbar_icon = tk.PhotoImage(
@@ -132,7 +139,7 @@ class Application(tk.Tk):
             )
         self.iconphoto(True, self.taskbar_icon)
 
-        #splash_screen = Splash(parent=self, text="Loading Automated HINT")
+        
 
         ######################################
         # Initialize Models, Menus and Views #
@@ -276,19 +283,20 @@ class Application(tk.Tk):
     #####################
     def center_window(self):
         """ Center the root window. """
+        self.update_idletasks()
         logger.debug("Centering root window after drawing widgets")
-        #self.update_idletasks()
-        self.update()
         screen_width = self.winfo_screenwidth()
         screen_height = self.winfo_screenheight()
         size = tuple(int(_) for _ in self.geometry().split('+')[0].split('x'))
         x = screen_width/2 - size[0]/2
         y = screen_height/2 - size[1]/2
         self.geometry("+%d+%d" % (x, y))
+        #print(f"\n\nscreen width, height: {screen_width}, {screen_height}")
+        #print(f"geometry: {self.geometry()}")
         self.deiconify()
 
 
-    # def center_window(self, window):
+    # def center_window2(self, window):
     #     """ Center the root window. """
     #     logger.debug("Centering root window after drawing widgets")
     #     window.update_idletasks()
@@ -357,8 +365,18 @@ class Application(tk.Tk):
         # Prepare trials
         trials = self._prepare_trials()
 
-        # Create TrialHandler
-        self.th = tmpy.handlers.TrialHandler(trials)
+        # Format step sizes
+        steps = tmpy.functions.helper_funcs.string_to_list(
+            string_list=self.settings['step_sizes'].get(),
+            datatype='int'
+            )
+
+        # Create adaptive trial handler
+        self.ath = tmpy.handlers.AdaptiveTrialHandler(
+            trials_df=trials,
+            parameter=self.settings['starting_level_dB'].get(),
+            step_sizes=steps
+            )
 
         # Disable "Start" from File menu
         self.menu.file_menu.entryconfig('Start', state='disabled')
@@ -377,12 +395,13 @@ class Application(tk.Tk):
         logger.debug("Preparing audio for playback")
 
         # Calculate level based on SLM offset
-        self._calc_level(self.settings['desired_level_dB'].get())
+        #self._calc_level(self.settings['desired_level_dB'].get())
+        self._calc_level(self.ath.parameter)
 
         # Add directory to file name
         stim = Path(os.path.join(
             self.settings['import_audio_path'].get(),
-            self.th.trial_info['file']
+            self.ath.trial_info['file']
             )
             )
         
@@ -414,6 +433,7 @@ class Application(tk.Tk):
             message="You have completed the task!",
             detail=f"HINT score: {self.sm.final_snr} dB SNR"
         )
+        logger.debug("Closing application")
         self.quit()
 
 
@@ -433,13 +453,15 @@ class Application(tk.Tk):
                  'sentence_num',
                  'desired_level_dB',
                  'correct',
-                 'incorrect'
+                 'incorrect',
+                 'step_size',
+                 'response'
                  ]
 
         try:
             self.dh.save_data(
                 filepath=fullpath,
-                dict_list=[self.settings, responses, self.th.trial_info],
+                dict_list=[self.settings, responses, self.ath.trial_info],
                 order=order
             )
         except PermissionError as e:
@@ -485,7 +507,7 @@ class Application(tk.Tk):
 
         # Get next trial
         try:
-            self.th.next()
+            self.ath.next(response=self.sm.outcome)
         except IndexError:
             logger.warning("End of trials!")
             self._end_of_task()
@@ -493,10 +515,10 @@ class Application(tk.Tk):
         
         # Display sentence with checkbuttons
         self.main_view.update_main_label(
-            sentence=self.th.trial_info['sentence'])
+            sentence=self.ath.trial_info['sentence'])
 
         # Update trial label
-        self.main_view.update_trial_number(self.th.trial_num)
+        self.main_view.update_trial_number(self.ath.trial_num)
 
         # Disable user controls during playback
         self.main_view.disable_user_controls(text="Presenting")

@@ -18,6 +18,7 @@ fields = {
     'adjusted_level_dB': {'type': 'float', 'value': -25.0},
     'desired_level_dB': {'type': 'float', 'value': 65},
     'noise_level_dB': {'type': 'float', 'value': 65},
+    'starting_level_dB': {'type': 'float', 'value': 65},
 
     # Audio device variables
     'audio_device': {'type': 'int', 'value': 999},
