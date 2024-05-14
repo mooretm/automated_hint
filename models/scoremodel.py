@@ -90,8 +90,8 @@ class ScoreModel:
         """
         logger.debug("Calculating final SNR")
         # Average of trials five to end
-        avg_level = round(statistics.mean(trial_levels[4:]), 2)
-        self.final_snr = avg_level - noise_level
+        avg_level = statistics.mean(trial_levels[4:])
+        self.final_snr = round(avg_level - noise_level, 2)
 
 
 if __name__ == "__main__":

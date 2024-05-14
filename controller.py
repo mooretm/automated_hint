@@ -37,6 +37,7 @@ import app_assets
 import menus
 import models
 import setup
+import stimuli
 import tmpy
 import views
 from tmpy import tkgui
@@ -335,11 +336,18 @@ class Application(tk.Tk):
     def _prepare_trials(self):
         """ Import matrix file and organize trials. """
         # Create MatrixHandler
-        self.mh = tmpy.handlers.MatrixHandler(
-            filepath=self.settings['matrix_file_path'].get(),
-            randomize=self.settings['randomize'].get(),
-            repetitions=self.settings['repetitions'].get()
-        )
+        try:
+            self.mh = tmpy.handlers.MatrixHandler(
+                filepath=stimuli.HINT_SENTENCES, #self.settings['matrix_file_path'].get(),
+                randomize=self.settings['randomize'].get(),
+                repetitions=self.settings['repetitions'].get()
+            )
+        except FileNotFoundError as e:
+            messagebox.showerror(
+                title="File Not Found",
+                message="Cannot find matrix file!",
+                detail=e
+            )
         
         # Convert string of HINT list numbers to list
         lists = tmpy.functions.helper_funcs.string_to_list(
@@ -394,12 +402,17 @@ class Application(tk.Tk):
         logger.debug("Preparing audio for playback")
 
         # Calculate level based on SLM offset
-        #self._calc_level(self.settings['desired_level_dB'].get())
+        """ WARNING: Use a separate 'starting level' variable to avoid
+            automatically using the last presented level on startup.
+
+            Do NOT use: self.settings['desired_level_dB'].get()
+        """
         self._calc_level(self.ath.parameter)
 
         # Add directory to file name
+        #self.settings['import_audio_path'].get(),
         stim = Path(os.path.join(
-            self.settings['import_audio_path'].get(),
+            stimuli.HINT_AUDIO,
             self.ath.trial_info['file']
             )
             )

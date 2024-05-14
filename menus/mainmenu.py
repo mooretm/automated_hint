@@ -1,7 +1,7 @@
 """ Main menu for automated HINT.  
 
     Written by: Travis M. Moore
-    Last edited: May 07, 2024
+    Last edited: May 14, 2024
 """
 
 ###########
