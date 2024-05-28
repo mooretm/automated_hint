@@ -14,13 +14,11 @@
 # Standard library
 import datetime
 import importlib
-import json
 import logging.config
 import logging.handlers
 import os
 import sys
 import tkinter as tk
-import time
 import webbrowser
 from pathlib import Path
 from tkinter import messagebox
@@ -29,11 +27,13 @@ from tkinter import messagebox
 import markdown
 import numpy as np
 
-# Custom
+# Add custom path
 try:
     sys.path.append(os.environ['TMPY'])
 except KeyError:
     sys.path.append('C:\\Users\\MooTra\\Code\\Python')
+
+# Custom
 import app_assets
 import menus
 import models
@@ -42,73 +42,11 @@ import stimuli
 import tmpy
 import views
 from tmpy import tkgui
-from tmpy import readwrite
 
 ##########
 # Logger #
 ##########
 logger = logging.getLogger(__name__)
-
-def setup_logging(NAME):
-    """ Create output log file path. 
-        Import and update logging config JSON file.
-        Apply config to logger.
-    """
-    # Create logging output file path based on app name
-    flat_name = tmpy.functions.helper_funcs.flatten_text(NAME)
-    _app_with_ext = flat_name + '.log.jsonl'
-    filename = os.path.join(Path.home(), flat_name, _app_with_ext)
-
-    # Specify logging config file path
-    try:
-        config_file = os.path.join(
-            os.environ['TMPY'],
-            'tmpy',
-            'logger',
-            'logger_config.json'
-        )
-    except KeyError:
-        config_file = tmpy.logger.LOGGER_CONFIG_JSON
-
-    # Import and update logging config file
-    with open(config_file) as f_in:
-        config = json.load(f_in)
-        # Update output file location based on app name
-        config['handlers']['file']['filename'] = filename
-        # Pass in custom JSONFormatter
-        config['formatters']['json']['()'] = tmpy.logger.JSONFormatter
-
-    # Apply logging config
-    logging.config.dictConfig(config)
-
-#################
-# Splash Screen #
-#################
-class Splash(tk.Toplevel):
-    def __init__(self, parent, text):
-        tk.Toplevel.__init__(self, parent)
-        #logger.debug("Initializing splash screen")
-        self.withdraw()
-        self.title("Please wait")
-        self.geometry("300x200")
-        self.resizable(False, False)
-        tk.Label(self, text=text).pack()
-        self.center_splashscreen()
-        self.update()
-        
-
-    def center_splashscreen(self):
-        """ Center the splash screen. """
-        self.update_idletasks()
-        screen_width = self.winfo_screenwidth()
-        screen_height = self.winfo_screenheight()
-        size = tuple(int(_) for _ in self.geometry().split('+')[0].split('x'))
-        x = screen_width/2 - size[0]/2
-        y = screen_height/2 - size[1]/2
-        self.geometry("+%d+%d" % (x, y))
-        print(f"\n\nscreen width, height: {screen_width}, {screen_height}")
-        print(f"geometry: {self.geometry()}")
-        self.deiconify()
 
 ###############
 # Application #
@@ -118,15 +56,13 @@ class Application(tk.Tk):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        #splash_screen = Splash(parent=self, text="Loading Automated HINT")
-
         self.withdraw() # Hide root window during setup
 
         #############
         # Constants #
         #############
         self.NAME = 'Automated HINT'
-        self.VERSION = '0.1.1'
+        self.VERSION = '0.1.2'
         self.EDITED = 'May 28, 2024'
 
         ################
@@ -153,7 +89,8 @@ class Application(tk.Tk):
 
         # Set up custom logger as soon as config dir is created
         # (i.e., after settings model has been initialized)
-        setup_logging(self.NAME)
+        config = tmpy.functions.logging_funcs.setup_logging(self.NAME)
+        logging.config.dictConfig(config)
         logger.debug("Started custom logger")
 
         # Default public attributes
@@ -265,9 +202,6 @@ class Application(tk.Tk):
                     detail="Please check that you have access to Starfile."
                 )
 
-        # Destroy splash screen
-        #splash_screen.destroy()
-
         # Temporarily disable Help menu until documents are written
         self.menu.help_menu.entryconfig('README...', state='disabled')
 
@@ -275,11 +209,10 @@ class Application(tk.Tk):
             import pyi_splash
             pyi_splash.update_text('UI Loaded ...')
             pyi_splash.close()
-            logger.info('Splash screen closed.')
+            logger.debug('Splash screen closed.')
 
         # Center main window
         self.center_window()
-        #self.center_window(self)
 
         # Initialization successful
         logger.info('Application initialized successfully')
@@ -297,8 +230,6 @@ class Application(tk.Tk):
         x = screen_width/2 - size[0]/2
         y = screen_height/2 - size[1]/2
         self.geometry("+%d+%d" % (x, y))
-        #print(f"\n\nscreen width, height: {screen_width}, {screen_height}")
-        print(f"geometry: {self.geometry()}")
         self.deiconify()
 
 

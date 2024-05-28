@@ -14,11 +14,13 @@ import sys
 import tkinter as tk
 from tkinter import messagebox
 
-# Custom
+# Add custom path
 try:
     sys.path.append(os.environ['TMPY'])
 except KeyError:
     sys.path.append('C:\\Users\\MooTra\\Code\\Python')
+
+# Custom
 from tmpy.tkgui.shared_assets import images
 
 ###########

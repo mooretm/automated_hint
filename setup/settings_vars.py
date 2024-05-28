@@ -1,5 +1,11 @@
 """ Settings variables for automated HINT. """
 
+###########
+# Imports #
+###########
+from stimuli import HINT_AUDIO
+from stimuli import HINT_SENTENCES
+
 # Define dictionary items
 fields = {
     # Session variables
@@ -10,8 +16,10 @@ fields = {
     'randomize': {'type': 'int', 'value': 0},
     'repetitions': {'type': 'int', 'value': 1},
     'lists': {'type': 'str', 'value': '1, 2'},
-    'import_audio_path': {'type': 'str', 'value': r'.\stimuli\audio'},
-    'matrix_file_path': {'type': 'str', 'value': r'.\stimuli\sentences\matrix_HINT.csv'},
+    # 'import_audio_path': {'type': 'str', 'value': r'.\stimuli\audio'},
+    # 'matrix_file_path': {'type': 'str', 'value': r'.\stimuli\sentences\matrix_HINT.csv'},
+    'import_audio_path': {'type': 'str', 'value': HINT_AUDIO},
+    'matrix_file_path': {'type': 'str', 'value': HINT_SENTENCES},
     'step_sizes': {'type': 'str', 'value': '4, 4, 4, 4, 2'},
 
     # Presentation level variables
