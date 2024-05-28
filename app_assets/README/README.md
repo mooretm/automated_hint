@@ -119,7 +119,7 @@ The instructions below guide you through the process of using the app to balance
 
 # Compiling from Source
 ```
-pyinstaller --noconfirm --onefile --windowed --icon "C:/Users/MooTra/Code/Python/tmpy/tkgui/shared_assets/images/logo_icons/logo_full.ico" --add-data "C:/Users/MooTra/Code/Python/automated_hint/app_assets;app_assets/" --add-data "C:/Users/MooTra/Code/Python/automated_hint/stimuli;stimuli/" --add-data "C:/Users/MooTra/Code/Python/tmpy;tmpy/" --paths "C:/Users/MooTra/Code/Python/tmpy" --hidden-import "numpy" --hidden-import "pandas" --hidden-import "sounddevice" --hidden-import "soundfile" --hidden-import "msoffcrypto" --hidden-import "idlelib"  "C:/Users/MooTra/Code/Python/automated_hint/controller.py"
+pyinstaller --noconfirm --onefile --windowed --icon "C:/Users/MooTra/Code/Python/tmpy/tkgui/shared_assets/images/logo_icons/logo_full.ico" --name "HINT" --splash "C:/Users/MooTra/Code/Python/tmpy/tkgui/shared_assets/images/logo_icons/logo_full.png" --add-data "C:/Users/MooTra/Code/Python/automated_hint/app_assets;app_assets/" --add-data "C:/Users/MooTra/Code/Python/tmpy;tmpy/" --paths "C:/Users/MooTra/Code/Python/tmpy" --hidden-import "numpy" --hidden-import "pandas" --hidden-import "sounddevice" --hidden-import "soundfile" --hidden-import "msoffcrypto" --hidden-import "idlelib"  "C:/Users/MooTra/Code/Python/automated_hint/controller.py"
 ```
 <br>
 <br>

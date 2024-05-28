@@ -13,6 +13,7 @@
 ###########
 # Standard library
 import datetime
+import importlib
 import json
 import logging.config
 import logging.handlers
@@ -125,8 +126,8 @@ class Application(tk.Tk):
         # Constants #
         #############
         self.NAME = 'Automated HINT'
-        self.VERSION = '0.1.0'
-        self.EDITED = 'May 14, 2024'
+        self.VERSION = '0.1.1'
+        self.EDITED = 'May 28, 2024'
 
         ################
         # Window setup #
@@ -154,7 +155,6 @@ class Application(tk.Tk):
         # (i.e., after settings model has been initialized)
         setup_logging(self.NAME)
         logger.debug("Started custom logger")
-        logger.debug("Initializing application")
 
         # Default public attributes
         self.level_data = []
@@ -270,6 +270,12 @@ class Application(tk.Tk):
 
         # Temporarily disable Help menu until documents are written
         self.menu.help_menu.entryconfig('README...', state='disabled')
+
+        if '_PYIBoot_SPLASH' in os.environ and importlib.util.find_spec("pyi_splash"):
+            import pyi_splash
+            pyi_splash.update_text('UI Loaded ...')
+            pyi_splash.close()
+            logger.info('Splash screen closed.')
 
         # Center main window
         self.center_window()
