@@ -272,19 +272,14 @@ class Application(tk.Tk):
 
     def _prepare_trials(self):
         """ Import matrix file and organize trials. """
-        # Create MatrixHandler
-        try:
-            self.mh = tmpy.handlers.MatrixHandler(
-                filepath=stimuli.HINT_SENTENCES, #self.settings['matrix_file_path'].get(),
-                randomize=0,
-                repetitions=1
-            )
-        except FileNotFoundError as e:
-            messagebox.showerror(
-                title="File Not Found",
-                message="Cannot find matrix file!",
-                detail=e
-            )
+        # Create dict of arguments
+        pars = {
+            'filepath': stimuli.HINT_SENTENCES,
+        }
+
+        # Create matrix object
+        mf = models.HINTMatrix(**pars)
+        matrix = mf.import_matrix_file()
         
         # Convert string of HINT list numbers to list
         lists = tmpy.functions.helper_funcs.string_to_list(
@@ -293,8 +288,8 @@ class Application(tk.Tk):
             )
         
         # Grab specified lists
-        mask = self.mh.matrix['list_num'].isin(lists)
-        trials_df = self.mh.matrix[mask]
+        mask = matrix['list_num'].isin(lists)
+        trials_df = matrix[mask]
 
         return trials_df
 
@@ -350,7 +345,6 @@ class Application(tk.Tk):
         self._calc_level(self.ath.parameter)
 
         # Add directory to file name
-        #self.settings['import_audio_path'].get(),
         stim = Path(os.path.join(
             stimuli.HINT_AUDIO,
             self.ath.trial_info['file']

@@ -5,5 +5,14 @@ from models.scoremodel import (
 )
 
 __all__ = [
-    "ScoreModel"
+    'ScoreModel'
+]
+
+
+from models.matrixmodel import (
+    HINTMatrix
+)
+
+__all__ += [
+    'HINTMatrix'
 ]
