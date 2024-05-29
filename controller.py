@@ -62,7 +62,7 @@ class Application(tk.Tk):
         # Constants #
         #############
         self.NAME = 'Automated HINT'
-        self.VERSION = '0.1.2'
+        self.VERSION = '0.1.3'
         self.EDITED = 'May 29, 2024'
 
         ################

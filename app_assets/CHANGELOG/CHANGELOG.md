@@ -1,12 +1,24 @@
 <h1 style="text-align: center;">Change Log: Automated HINT</h1>
 ---
 
+## Version 0.1.3
+
+Date: May 29, 2024
+
+### Patches
+1. Replaced MatrixHandler with MatrixFile.
+2. Improved SettingsModel to avoid prematurely attempting to write to file.
+<br>
+<br>
+
+---
+
 ## Version 0.1.2
 
 Date: May 28, 2024
 
 ### Patches
-1. Updated HINT stimuli file paths. 
+1. Updated HINT stimulus file paths. 
 <br>
 <br>
 
