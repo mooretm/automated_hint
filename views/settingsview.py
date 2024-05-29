@@ -1,7 +1,7 @@
 """ Settings view for automated HINT. 
 
     Written by: Travis M. Moore
-    Last edited: May 07, 2024
+    Last edited: May 28, 2024
 """
 
 ###########
@@ -45,6 +45,7 @@ class SettingsView(tk.Toplevel):
     def _draw_widgets(self):
         """ Populate the MainView with widgets. """
         logger.debug("Drawing MainView widgets")
+
         ##########
         # Frames #
         ##########
@@ -66,17 +67,6 @@ class SettingsView(tk.Toplevel):
         # Noise options
         frm_noise = ttk.Labelframe(self, text='Noise Options')
         frm_noise.grid(row=15, column=5, **frame_options, sticky='nsew')
-
-        # # Audio file browser
-        # frm_audiopath = ttk.Labelframe(self, text="Audio File Directory")
-        # frm_audiopath.grid(row=15, column=5, **frame_options, ipadx=5, 
-        #     ipady=5)
-
-        # # Matrix file browser
-        # frm_matrixpath = ttk.Labelframe(self, text='Matrix File Path')
-        # frm_matrixpath.grid(row=20, column=5, **frame_options, ipadx=5, 
-        #     ipady=5)
-
 
         ###########
         # Widgets #
@@ -155,62 +145,6 @@ class SettingsView(tk.Toplevel):
         ttk.Entry(frm_noise, width=7,
             textvariable=self.settings['noise_level_dB']
             ).grid(row=5, column=10, sticky='w', **widget_options)
-
-
-        # # Randomize
-        # check_random = ttk.Checkbutton(frm_sentence, 
-        #                                text="Randomize",
-        #                                takefocus=0, 
-        #                                variable=self.settings['randomize']
-        #                                )
-        # check_random.grid(row=5, 
-        #                   column=5, 
-        #                   columnspan=20, 
-        #                   sticky='w',
-        #                   **widget_options
-        #                   )
-        
-        # # Repetitions
-        # ttk.Label(frm_sentence, 
-        #           text="Presentation(s)", 
-        #           takefocus=0
-        #           ).grid(row=10, 
-        #                  column=5, 
-        #                  sticky='e', 
-        #                  **widget_options
-        #                  )
-        # ttk.Entry(frm_sentence, 
-        #           width=5, 
-        #           textvariable=self.settings['repetitions']
-        #           ).grid(row=10,
-        #                  column=10
-        #                  )
-
-
-
-        # ###################
-        # # Audio Directory #
-        # ###################
-        # # Descriptive label
-        # ttk.Label(frm_audiopath, text="Path:"
-        #     ).grid(row=20, column=5, sticky='e', **widget_options)
-
-        # # Retrieve and truncate previous audio directory
-        # short_audio_path = general.truncate_path(
-        #     self.settings['audio_files_dir'].get()
-        # )
-
-        # # Create textvariable
-        # self.audio_var = tk.StringVar(value=short_audio_path)
-
-        # # Audio directory label
-        # ttk.Label(frm_audiopath, textvariable=self.audio_var, 
-        #     borderwidth=2, relief="solid", width=60
-        #     ).grid(row=20, column=10, sticky='w')
-        # ttk.Button(frm_audiopath, text="Browse", 
-        #     command=self._get_audio_directory,
-        #     ).grid(row=25, column=10, sticky='w', pady=(0, 10))
-
 
         # Submit button
         btn_submit = ttk.Button(self, text="Submit", command=self._on_submit)

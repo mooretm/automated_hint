@@ -1,11 +1,5 @@
 """ Settings variables for automated HINT. """
 
-###########
-# Imports #
-###########
-from stimuli import HINT_AUDIO
-from stimuli import HINT_SENTENCES
-
 # Define dictionary items
 fields = {
     # Session variables
@@ -13,13 +7,9 @@ fields = {
     'condition': {'type': 'str', 'value': "test"},
     
     # Stimulus variables
-    'randomize': {'type': 'int', 'value': 0},
-    'repetitions': {'type': 'int', 'value': 1},
     'lists': {'type': 'str', 'value': '1, 2'},
-    # 'import_audio_path': {'type': 'str', 'value': r'.\stimuli\audio'},
-    # 'matrix_file_path': {'type': 'str', 'value': r'.\stimuli\sentences\matrix_HINT.csv'},
-    'import_audio_path': {'type': 'str', 'value': HINT_AUDIO},
-    'matrix_file_path': {'type': 'str', 'value': HINT_SENTENCES},
+    'import_audio_path': {'type': 'str', 'value': ".\\stimuli\\audio"},
+    'matrix_file_path': {'type': 'str', 'value': ".\\stimuli\\sentences\\matrix_HINT.csv"},
     'step_sizes': {'type': 'str', 'value': '4, 4, 4, 4, 2'},
 
     # Presentation level variables
@@ -39,7 +29,6 @@ fields = {
     'slm_offset': {'type': 'float', 'value': 100.0},
 
     # Version control variables
-    'config_file_status': {'type': 'int', 'value': 0},
     'check_for_updates': {'type': 'str', 'value': 'yes'},
     'version_lib_path': {'type': 'str', 'value': r'\\starfile\Public\Temp\MooreT\Personal Files\admin\versions.xlsx'},
 }

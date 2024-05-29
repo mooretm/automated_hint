@@ -63,7 +63,7 @@ class Application(tk.Tk):
         #############
         self.NAME = 'Automated HINT'
         self.VERSION = '0.1.2'
-        self.EDITED = 'May 28, 2024'
+        self.EDITED = 'May 29, 2024'
 
         ################
         # Window setup #
@@ -276,8 +276,8 @@ class Application(tk.Tk):
         try:
             self.mh = tmpy.handlers.MatrixHandler(
                 filepath=stimuli.HINT_SENTENCES, #self.settings['matrix_file_path'].get(),
-                randomize=self.settings['randomize'].get(),
-                repetitions=self.settings['repetitions'].get()
+                randomize=0,
+                repetitions=1
             )
         except FileNotFoundError as e:
             messagebox.showerror(
@@ -308,6 +308,9 @@ class Application(tk.Tk):
 
         # Prepare trials
         trials = self._prepare_trials()
+
+        # Update MainView label to display current level
+        self.main_view.update_level_source()
 
         # Format step sizes
         steps = tmpy.functions.helper_funcs.string_to_list(
@@ -467,7 +470,9 @@ class Application(tk.Tk):
             sentence=self.ath.trial_info['sentence'])
 
         # Update trial label
-        self.main_view.update_trial_number(self.ath.trial_num)
+        msg = f"{self.ath.trial_num} of {self.ath.total_trials}"
+        self.main_view.update_trial_number(msg)
+        #self.main_view.update_trial_number(self.ath.trial_num)
 
         # Disable user controls during playback
         self.main_view.disable_user_controls(text="Presenting")

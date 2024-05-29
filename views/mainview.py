@@ -1,7 +1,7 @@
 """ Main view for automated HINT.
 
     Written by: Travis M. Moore
-    Last edited: May 09, 2024
+    Last edited: May 29, 2024
 """
 
 ###########
@@ -119,11 +119,16 @@ class MainView(ttk.Frame):
                   ).grid(row=20, column=5, sticky='w')
         ttk.Label(self.frm_params, textvariable=self.settings['lists']
                   ).grid(row=20, column=10, sticky='e')
+        
         # Level
         ttk.Label(self.frm_params, text="Level: "
                   ).grid(row=25, column=5, sticky='w')
-        ttk.Label(self.frm_params, textvariable=self.settings['desired_level_dB']
-                  ).grid(row=25, column=10, sticky='e')
+        self.lbl_level = ttk.Label(
+            self.frm_params, 
+            textvariable=self.settings['starting_level_dB']
+            )
+        self.lbl_level.grid(row=25, column=10, sticky='e')
+        
         # Trial number
         ttk.Label(self.frm_params, text="Trial: "
                   ).grid(row=30, column=5, sticky='w')
@@ -226,6 +231,13 @@ class MainView(ttk.Frame):
     def update_trial_number(self, trial):
         """ Update the session info 'Trial' label. """
         self.trial_var.set(trial)
+
+
+    def update_level_source(self):
+        """ Switch level label to display current level
+            (instead of starting level).
+        """
+        self.lbl_level.config(textvariable=self.settings['desired_level_dB'])
 
 
     def _on_next(self):
