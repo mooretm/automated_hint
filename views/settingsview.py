@@ -9,6 +9,8 @@
 ###########
 # Standard library
 import logging
+import os
+import sys
 import tkinter as tk
 from idlelib.tooltip import Hovertip
 from tkinter import ttk
@@ -26,7 +28,7 @@ class SettingsView(tk.Toplevel):
     """ View for setting session parameters. """
     def __init__(self, parent, settings, *args, **kwargs):
         super().__init__(parent, *args, **kwargs)
-        logger.debug("Initializing SettingsView")
+        logger.info("Initializing SettingsView")
 
         # Assign attributes
         self.parent = parent
@@ -44,7 +46,7 @@ class SettingsView(tk.Toplevel):
 
     def _draw_widgets(self):
         """ Populate the MainView with widgets. """
-        logger.debug("Drawing MainView widgets")
+        logger.info("Drawing MainView widgets")
 
         ##########
         # Frames #
@@ -74,12 +76,12 @@ class SettingsView(tk.Toplevel):
         # Subject
         lbl_sub = ttk.Label(frm_session, text="Subject:")
         lbl_sub.grid(row=5, column=5, sticky='e', **widget_options)
-        sub_tt = Hovertip(
+        Hovertip(
             anchor_widget=lbl_sub,
             text="A unique subject identifier."+
                 "\nCan be alpha, numeric, or both.",
             hover_delay=tt_delay
-            )
+        )
         ttk.Entry(frm_session, 
             textvariable=self.settings['subject']
             ).grid(row=5, column=10, sticky='w', **widget_options)
@@ -87,12 +89,12 @@ class SettingsView(tk.Toplevel):
         # Condition
         lbl_condition = ttk.Label(frm_session, text="Condition:")
         lbl_condition.grid(row=10, column=5, sticky='e', **widget_options)
-        condition_tt = Hovertip(
+        Hovertip(
             anchor_widget=lbl_condition,
             text="A unique condition name.\nCan be alpha, numeric, or both." +
                 "\nSeparate words with underscores.",
             hover_delay=tt_delay
-            )
+        )
         ttk.Entry(frm_session, 
             textvariable=self.settings['condition']
             ).grid(row=10, column=10, sticky='w', **widget_options)
@@ -107,12 +109,12 @@ class SettingsView(tk.Toplevel):
                          sticky='e',
                          **widget_options
                          )
-        lists_tt = Hovertip(
+        Hovertip(
             anchor_widget=lbl_lists,
             text="The list numbers to include in the session." +
                 "\nSeparate multiple values with a comma and space: 1, 2, 3",
             hover_delay=tt_delay
-            )
+        )
         ttk.Entry(frm_sentence,
                   textvariable=self.settings['lists']
                   ).grid(row=5, column=10, **widget_options)
@@ -124,11 +126,11 @@ class SettingsView(tk.Toplevel):
                                 sticky='e', 
                                 **widget_options
                                 )
-        sentence_level_tt = Hovertip(
+        Hovertip(
             anchor_widget=lbl_sentence_level,
             text="A single starting presentation level for the sentences.",
             hover_delay=tt_delay
-            )
+        )
         ttk.Entry(frm_sentence, width=7,
             #textvariable=self.settings['desired_level_dB']
             textvariable=self.settings['starting_level_dB']
@@ -137,11 +139,11 @@ class SettingsView(tk.Toplevel):
         # Noise level
         lbl_noise_level = ttk.Label(frm_noise, text="Level:")
         lbl_noise_level.grid(row=5, column=5, sticky='e', **widget_options)
-        noise_level_tt = Hovertip(
+        Hovertip(
             anchor_widget=lbl_noise_level,
             text="A single presentation level for the noise.",
             hover_delay=tt_delay
-            )
+        )
         ttk.Entry(frm_noise, width=7,
             textvariable=self.settings['noise_level_dB']
             ).grid(row=5, column=10, sticky='w', **widget_options)
@@ -159,7 +161,7 @@ class SettingsView(tk.Toplevel):
     #############
     def _center_window(self):
         """ Center the TopLevel window over the root window. """
-        logger.debug("Centering window over parent")
+        logger.info("Centering window over parent")
         # Get updated window size (after drawing widgets)
         self.update_idletasks()
 
@@ -178,9 +180,9 @@ class SettingsView(tk.Toplevel):
 
     def _on_submit(self):
         """ Send submit event to controller and close window. """
-        logger.debug("Sending 'SUBMIT' event to controller")
+        logger.info("Sending 'SUBMIT' event to controller")
         self.parent.event_generate('<<SettingsSubmit>>')
-        logger.debug("Destroying SettingsView instance")
+        logger.info("Destroying SettingsView instance")
         self.destroy()
 
 
